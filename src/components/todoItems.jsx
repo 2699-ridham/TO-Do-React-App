@@ -1,14 +1,18 @@
 import React from 'react'
-import { FaTimesCircle } from "react-icons/fa";
+import { FaRegWindowClose, FaRegEdit } from "react-icons/fa";
+
 function todoItems(props) {
     return (
         <div className='todo-style'>
+            <li>{props.nameItem}</li>
             <div className="icon-style">
-                <FaTimesCircle onClick={() => {
-                    props.onSelect(props.id);
+                <FaRegWindowClose className='delete' onClick={() => {
+                    props.onSelect(props.uni);
+                }} />
+                <FaRegEdit className='edit' onClick={() => {
+                    props.onEdit(props.uni);
                 }} />
             </div>
-            <li>{props.text}</li>
         </div>
     )
 }

@@ -5,28 +5,64 @@ import Todoitems from './components/todoItems';
 function App() {
   const [list, setlist] = useState("");
   const [addlist, setaddlist] = useState([]);
+  const [ToggleBtn, setToggleBtn] = useState(true);
+  const [UpdateEditItem, setUpdateEditItem] = useState(null);
 
   const AddItems = (e) => {
     setlist(e.target.value);
   }
 
   const handleClick = () => {
-    setaddlist((oldItems) => {
-      return [...oldItems, list];
-    });
-    // console.log(addlist);
+    if (!list) {
+      alert("Input can't be empty");
+    } else if (list && !ToggleBtn) {
+      setaddlist(addlist.map((value) => {
+        if (value.id === UpdateEditItem) {
+          return { ...value, name: list }
+        }
+        return value; 
+      }))
 
-    setlist("");
-    // console.log(list);
+      setToggleBtn(true);
+      setlist('');
+      setUpdateEditItem(null);
+
+    } else {
+      const allInputData = { id: new Date().getTime().toString(), name: list }
+      setaddlist((oldItems) => {
+        return [...oldItems, allInputData];
+      });
+      console.log(allInputData);
+
+      setlist("");
+      // console.log(list);
+    }
   };
 
   const deleteItems = (id) => {
-    console.log("delete successfully");
+    // console.log("delete successfully");
     setaddlist((oldItems) => {
-      return oldItems.filter((ele, index) => {
-        return (id !== index);
+      return oldItems.filter((value) => {
+        return (id !== value.id);
       })
     })
+  }
+
+  const editItems = (id) => {
+    // console.log("edit successfully");
+    const newEditItems = addlist.find((value) => {
+      return (id === value.id)
+    })
+
+    // console.log(newEditItems);
+    setToggleBtn(false);
+
+    //bring text to be edited in input box;
+    setlist(newEditItems.name);
+
+    //update edit item
+    setUpdateEditItem(id);
+
   }
   return (
     <div className="todo-List">
@@ -35,11 +71,11 @@ function App() {
         <h1>TODO List</h1>
         <br />
         <input type='text' value={list} placeholder='Add task!' onChange={AddItems} />
-        <button onClick={handleClick}> + </button>
+        {ToggleBtn ? <button onClick={handleClick}> + </button> : <button onClick={handleClick}>🖋️</button>}
         <ol>
           {
-            addlist.map((value, idx) => {
-              return <Todoitems key={idx} id={idx} text={value} onSelect={deleteItems} />
+            addlist.map((value) => {
+              return <Todoitems key={value.id} uni={value.id} nameItem={value.name} onSelect={deleteItems} onEdit={editItems} />
             })
           }
         </ol>
