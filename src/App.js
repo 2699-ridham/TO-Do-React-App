@@ -12,6 +12,7 @@ function App() {
     setlist(e.target.value);
   }
 
+  //handle clicking of adding items and editing items
   const handleClick = () => {
     if (!list) {
       alert("Input can't be empty");
@@ -39,6 +40,7 @@ function App() {
     }
   };
 
+  //delete items
   const deleteItems = (id) => {
     // console.log("delete successfully");
     setaddlist((oldItems) => {
@@ -48,6 +50,7 @@ function App() {
     })
   }
 
+  //edit items
   const editItems = (id) => {
     // console.log("edit successfully");
     const newEditItems = addlist.find((value) => {
@@ -64,6 +67,8 @@ function App() {
     setUpdateEditItem(id);
 
   }
+
+
   return (
     <div className="todo-List">
       <div className="center-div">
